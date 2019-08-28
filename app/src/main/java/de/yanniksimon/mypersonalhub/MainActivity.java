@@ -8,11 +8,6 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import de.yanniksimon.mypersonalhub.Weather.Weather;
 import de.yanniksimon.mypersonalhub.Welcome.Time;
 
@@ -50,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Weather
         Log.i(LOG, "Run Weather Functions");
-        Weather.jsonWeather();
+        Weather.parseJsonWeatherData();
 
     }
 }
