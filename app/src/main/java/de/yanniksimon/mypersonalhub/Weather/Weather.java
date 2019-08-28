@@ -10,6 +10,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.file.Watchable;
+
 import de.yanniksimon.mypersonalhub.MainActivity;
 import de.yanniksimon.mypersonalhub.Variables.Variables;
 
@@ -21,8 +23,12 @@ public class Weather {
     long sunrise, sunset;
     private String condition,conditionAbb,conditionIconUrl, location;
 
+    static Weather weather;
 
-    public Weather(String location, String condition, String conditionAbb, String conditionIconUrl, int temp, int temp_min, int temp_max, long sunrise, long sunset){
+
+
+
+    public Weather(String location, String condition, String conditionIconCode, String conditionIconUrl, int temp, int temp_min, int temp_max, long sunrise, long sunset){
         Log.i(LOG, "Construcotr");
 
         this.location = location;
@@ -35,7 +41,8 @@ public class Weather {
 
     }
 
-    public static void parseJsonWeatherData(){
+    //Gets the Data
+    public static Weather parseJsonWeatherData(){
         Log.i(LOG, "jsonWeather");
         String url = Variables.apiStuttgartUrl;
 
@@ -46,15 +53,22 @@ public class Weather {
                 try {
                     String location = response.getString("name");
                     String condition = response.getJSONArray("weather").getJSONObject(0).getString("main");
+                    String conditionIconCode = response.getJSONArray("weather").getJSONObject(0).getString("icon");
                     int temp = response.getJSONObject("main").getInt("temp");
                     int temp_min = response.getJSONObject("main").getInt("temp_min");
                     int temp_max = response.getJSONObject("main").getInt("temp_max");
                     long sunrise = response.getJSONObject("sys").getLong("sunrise");
                     long sunset = response.getJSONObject("sys").getLong("sunset");
+
+                    //Create Icon URL
+                    String iconUrl = Variables.conditionIconUrl;
+                    iconUrl = iconUrl.concat(conditionIconCode + ".png");
+
                     Log.i(LOG, "WeatherObjectData " +
                             "\nLocation: " + location +
                             "\nCondition: " + condition +
-                            "\nAbbreviation: " + convertToAbbreviation(condition) +
+                            "\nConditionIconCode: " + conditionIconCode +
+                            "\nConditionIcon: " + iconUrl +
                             "\nTemperature: " + temp +
                             "\nTemperature Min: " + temp_min +
                             "\nTemperature Max: " + temp_max +
@@ -63,8 +77,9 @@ public class Weather {
 
 
 
+                    weather = new Weather(location, condition,conditionIconCode,iconUrl, temp, temp_min, temp_max, 239482394L,239849384L);
 
-                    Weather weather = new Weather(location, condition,"c","", temp, temp_min, temp_max, 239482394L,239849384L);
+
 
 
                 } catch (JSONException e) {
@@ -80,40 +95,21 @@ public class Weather {
         });
 
         MainActivity.requestQueue.add(jsonObjectRequest);
-
-
-    }
-
-    private static String convertToAbbreviation(String condition){
-
-        switch (condition){
-            case "Snow":
-                return "sn";
-            case "Sleet":
-                return "sl";
-            case "Hail":
-                return "h";
-            case "Thunderstorm":
-                return "t";
-            case "Heavy Rain":
-                return "hr";
-            case "Light Rain":
-                return "lr";
-            case "Showers":
-                return "s";
-            case "Heavy Cloud":
-                return "hc";
-            case "Light Cloud":
-                return "lc";
-            case "Clear":
-                return "c";
-            default:
-                return "c";
-        }
+        return weather;
 
     }
 
+    //Puts the Data into the UI
+    public static void generateWeatherUI(Weather weather){
+        MainActivity.textViewLocation.setText(weather.getLocation());
+        MainActivity.textViewCondition.setText(weather.getCondition());
+        MainActivity.textViewTemp.setText(weather.getTemp());
+        MainActivity.textViewTempMax.setText(weather.temp_max);
+        MainActivity.textViewTempMin.setText(weather.temp_min);
 
+
+
+    }
 
 
     public int getTemp() {
