@@ -1,11 +1,13 @@
 package de.yanniksimon.mypersonalhub.Weather;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +23,7 @@ public class Weather {
 
     private int temp, temp_min, temp_max;
     long sunrise, sunset;
-    private String condition,conditionAbb,conditionIconUrl, location;
+    private String condition,conditionIconCode,conditionIconUrl, location;
 
     static Weather weather;
 
@@ -38,6 +40,8 @@ public class Weather {
         this.temp_max = temp_max;
         this.sunrise = sunrise;
         this.sunset = sunset;
+        this.conditionIconUrl = conditionIconUrl;
+        this.conditionIconCode = conditionIconCode;
 
     }
 
@@ -62,7 +66,8 @@ public class Weather {
 
                     //Create Icon URL
                     String iconUrl = Variables.conditionIconUrl;
-                    iconUrl = iconUrl.concat(conditionIconCode + ".png");
+                    iconUrl = iconUrl.concat(conditionIconCode + "@2x.png");
+
 
                     Log.i(LOG, "WeatherObjectData " +
                             "\nLocation: " + location +
@@ -103,6 +108,7 @@ public class Weather {
 
     }
 
+
     //Puts the Data into the UI
     public static void generateWeatherUI(Weather weather){
 
@@ -112,6 +118,14 @@ public class Weather {
         MainActivity.textViewTemp.setText(Integer.toString(weather.getTemp()));
         MainActivity.textViewTempMax.setText(Integer.toString(weather.getTemp_max()));
         MainActivity.textViewTempMin.setText(Integer.toString(weather.getTemp_min()));
+
+
+        //Load Icon with Holy Glide <3
+        Glide
+                .with(MainActivity.getContext())
+                .load(weather.getConditionIconUrl())
+                .into(MainActivity.imageViewCondition);
+
 
 
 
@@ -172,6 +186,14 @@ public class Weather {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getConditionIconUrl() {
+        return conditionIconUrl;
+    }
+
+    public void setConditionIconUrl(String conditionIconUrl) {
+        this.conditionIconUrl = conditionIconUrl;
     }
 
 }

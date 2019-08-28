@@ -1,5 +1,6 @@
 package de.yanniksimon.mypersonalhub;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import de.yanniksimon.mypersonalhub.Weather.Weather;
 import de.yanniksimon.mypersonalhub.Welcome.Time;
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static RequestQueue requestQueue;
 
+    //Context
+    private static Context context;
+
 
 
     private static String LOG = "LOG: MainActivity";
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this.getApplicationContext();
 
 
         //Assign UI Elements
@@ -66,10 +72,9 @@ public class MainActivity extends AppCompatActivity {
         //Load Data
         Weather weather = Weather.parseJsonWeatherData();
 
-        //Put Data into UI Elements
+    }
 
-        //Weather.generateWeatherUI(weather);
-
-
+    public static Context getContext(){
+        return context;
     }
 }
