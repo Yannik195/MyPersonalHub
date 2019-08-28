@@ -78,13 +78,14 @@ public class Weather {
 
 
                     weather = new Weather(location, condition,conditionIconCode,iconUrl, temp, temp_min, temp_max, 239482394L,239849384L);
-
-
+                    generateWeatherUI(weather);
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
 
             }
         }, new Response.ErrorListener() {
@@ -95,17 +96,22 @@ public class Weather {
         });
 
         MainActivity.requestQueue.add(jsonObjectRequest);
+        if (jsonObjectRequest.hasHadResponseDelivered()){
+            generateWeatherUI(weather);
+        }
         return weather;
 
     }
 
     //Puts the Data into the UI
     public static void generateWeatherUI(Weather weather){
+
+
         MainActivity.textViewLocation.setText(weather.getLocation());
         MainActivity.textViewCondition.setText(weather.getCondition());
-        MainActivity.textViewTemp.setText(weather.getTemp());
-        MainActivity.textViewTempMax.setText(weather.temp_max);
-        MainActivity.textViewTempMin.setText(weather.temp_min);
+        MainActivity.textViewTemp.setText(Integer.toString(weather.getTemp()));
+        MainActivity.textViewTempMax.setText(Integer.toString(weather.getTemp_max()));
+        MainActivity.textViewTempMin.setText(Integer.toString(weather.getTemp_min()));
 
 
 

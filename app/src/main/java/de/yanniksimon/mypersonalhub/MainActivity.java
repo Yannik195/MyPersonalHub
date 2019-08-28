@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Weather weather = Weather.parseJsonWeatherData();
 
         //Put Data into UI Elements
+
         //Weather.generateWeatherUI(weather);
 
 
