@@ -13,4 +13,10 @@ public class Variables {
     public static String apiStuttgartUrl = "https://api.openweathermap.org/data/2.5/weather?q=Stuttgart,de&&units=metric&APPID=8e52e63661105846c1e05c2efebfd060";
     //Condition Icon Url. Add code (01d/03d/11n) after slash
     public static String conditionIconUrl = "http://openweathermap.org/img/wn/";
+
+
+    //News
+    //NewsApi.org
+    //api key
+    public static String newsApiKey = "3786e09d0aeb494787a9a3f73c1d6bcf";
 }

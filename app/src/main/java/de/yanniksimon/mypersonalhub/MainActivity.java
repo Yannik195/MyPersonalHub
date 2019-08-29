@@ -22,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
     public static TextView textViewLocation, textViewCondition, textViewTemp, textViewTempMax, textViewTempMin;
     public static ImageView imageViewCondition;
 
+    //News UI Elements
+    public static TextView textViewNewsName, textViewNewsTime, textViewNewsTitle, textViewNewsDescription;
+    public static ImageView imageViewNewsImage;
+
+
 
     public static RequestQueue requestQueue;
 
@@ -55,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         textViewTempMin = findViewById(R.id.textView_temp_min);
         imageViewCondition = findViewById(R.id.imageView_condition);
 
+        //News UI Elements
+        textViewNewsName = findViewById(R.id.textViewNewsName);
+        textViewNewsTime = findViewById(R.id.textViewNewsTime);
+        textViewNewsTitle = findViewById(R.id.textViewNewsTitle);
+        textViewNewsDescription = findViewById(R.id.textViewNewsDescription);
+        imageViewNewsImage = findViewById(R.id.imageViewNewsImage);
+
         //Volley
         Log.i(LOG, "Run Volley");
         requestQueue = Volley.newRequestQueue(this);
@@ -70,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i(LOG, "Run Weather Functions");
 
         //Load Data
-        Weather weather = Weather.parseJsonWeatherData();
+        Weather.parseJsonWeatherData();
 
     }
 
