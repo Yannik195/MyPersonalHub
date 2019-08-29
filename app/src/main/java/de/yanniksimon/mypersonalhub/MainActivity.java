@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import de.yanniksimon.mypersonalhub.News.News;
 import de.yanniksimon.mypersonalhub.Weather.Weather;
 import de.yanniksimon.mypersonalhub.Welcome.Time;
 
@@ -81,8 +82,14 @@ public class MainActivity extends AppCompatActivity {
         //Weather
         Log.i(LOG, "Run Weather Functions");
 
-        //Load Data
+        //Load WeatherData
         Weather.parseJsonWeatherData();
+
+        //News
+        Log.i(LOG, "News");
+        //Load News Date
+        News.parseJsonNewsData();
+
 
     }
 

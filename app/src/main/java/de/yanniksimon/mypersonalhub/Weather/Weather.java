@@ -1,6 +1,5 @@
 package de.yanniksimon.mypersonalhub.Weather;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -12,8 +11,6 @@ import com.bumptech.glide.Glide;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.file.Watchable;
-
 import de.yanniksimon.mypersonalhub.MainActivity;
 import de.yanniksimon.mypersonalhub.Variables.Variables;
 
@@ -22,16 +19,14 @@ public class Weather {
     private static String LOG = "LOG: WeatherClass";
 
     private int temp, temp_min, temp_max;
-    long sunrise, sunset;
+    private long sunrise, sunset;
     private String condition,conditionIconCode,conditionIconUrl, location;
 
-    static Weather weather;
-
-
+    private static Weather weather;
 
 
     public Weather(String location, String condition, String conditionIconCode, String conditionIconUrl, int temp, int temp_min, int temp_max, long sunrise, long sunset){
-        Log.i(LOG, "Construcotr");
+        Log.i(LOG, "Constructor");
 
         this.location = location;
         this.condition = condition;
@@ -42,13 +37,12 @@ public class Weather {
         this.sunset = sunset;
         this.conditionIconUrl = conditionIconUrl;
         this.conditionIconCode = conditionIconCode;
-
     }
 
     //Gets the Data
     public static Weather parseJsonWeatherData(){
         Log.i(LOG, "jsonWeather");
-        String url = Variables.apiStuttgartUrl;
+        String url = Variables.apiWeatherStuttgartUrl;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -68,7 +62,6 @@ public class Weather {
                     String iconUrl = Variables.conditionIconUrl;
                     iconUrl = iconUrl.concat(conditionIconCode + "@2x.png");
 
-
                     Log.i(LOG, "WeatherObjectData " +
                             "\nLocation: " + location +
                             "\nCondition: " + condition +
@@ -80,23 +73,17 @@ public class Weather {
                             "\nSunrise: " + sunrise +
                             "\nSunset: " + sunset);
 
-
-
                     weather = new Weather(location, condition,conditionIconCode,iconUrl, temp, temp_min, temp_max, 239482394L,239849384L);
                     generateWeatherUI(weather);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
 
@@ -105,13 +92,10 @@ public class Weather {
             generateWeatherUI(weather);
         }
         return weather;
-
     }
 
-
     //Puts the Data into the UI
-    public static void generateWeatherUI(Weather weather){
-
+    private static void generateWeatherUI(Weather weather){
 
         MainActivity.textViewLocation.setText(weather.getLocation());
         MainActivity.textViewCondition.setText(weather.getCondition());
@@ -119,16 +103,11 @@ public class Weather {
         MainActivity.textViewTempMax.setText(Integer.toString(weather.getTemp_max()));
         MainActivity.textViewTempMin.setText(Integer.toString(weather.getTemp_min()));
 
-
         //Load Icon with Holy Glide <3
         Glide
                 .with(MainActivity.getContext())
                 .load(weather.getConditionIconUrl())
                 .into(MainActivity.imageViewCondition);
-
-
-
-
     }
 
 
